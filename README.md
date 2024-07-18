@@ -3,6 +3,7 @@
 The implementation of **FakingRecipe**, a creative process-aware model for detecting fake news short videos. It
 captures the fake news preferences in material selection from sentimental and semantic aspects and considers the traits of material editing from spatial and temporal aspects.
 
+[Preprint (Coming Soon!)]()
 ## File Structure
 ```shell
 .
@@ -33,11 +34,12 @@ If you would like to access the FakeTT dataset, please fill out this [Applicatio
 
 ## Data Preprocess
 - To extract OCR, we use [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
-- To encode multimodal content from different aspects, we employ following models: [Hubert](https://huggingface.co/Rajaram1996/Hubert_emotion/), [XLM-RoBERTA](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment),  [CLIP](https://huggingface.co/openai/clip-vit-base-patch32), [SAM](https://github.com/facebookresearch/segment-anything).
 - To seg video clips, we use [TransNetv2](https://github.com/soCzech/TransNetV2).
+- To encode multimodal content from different aspects, we employ following models: [Hubert](https://huggingface.co/Rajaram1996/Hubert_emotion/), [XLM-RoBERTA](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment),  [CLIP](https://huggingface.co/openai/clip-vit-base-patch32), [SAM](https://github.com/facebookresearch/segment-anything).
 
-## Citation
+
+<!-- ## Citation
 If you find our dataset and code are helpful, please cite the following ACM MM 2024 paper:
  ```
 
-  ```
+  ``` -->

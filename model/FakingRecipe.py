@@ -120,7 +120,7 @@ class DurationEncoding(nn.Module):
         all_segs_embedding=[]
         if attribute=='natural_ab':
             for dv in time_value:
-                bucket_indice=torch.searchsorted(self.absolute_bin_edges, torch.tensor(dv,dtype=torch.float64)) #取值[0,100]
+                bucket_indice=torch.searchsorted(self.absolute_bin_edges, torch.tensor(dv,dtype=torch.float64))
                 dura_embedding=self.ab_duration_embed(bucket_indice)
                 all_segs_embedding.append(dura_embedding)
         elif attribute=='natural_re':
@@ -182,7 +182,7 @@ class MEAM(torch.nn.Module):
             nn.GELU(),
         )
         self.mlp_ocr_pattern=nn.Sequential(nn.Linear(4096,2048),nn.ReLU(),nn.Dropout(0.1),torch.nn.Linear(2048, 512),torch.nn.ReLU(),nn.Dropout(0.1),torch.nn.Linear(512, 128),torch.nn.ReLU())
-        self.proj_t=nn.Linear(512,128) #Fakesv:768, TTFN:512
+        self.proj_t=nn.Linear(512,128) 
         self.t_interseg_attention = Attention(128,heads=4,dim_head=64)
 
         self.proj_v=nn.Linear(512,128)
@@ -233,40 +233,40 @@ class MEAM(torch.nn.Module):
         for v_idx in range(len(narrative_v_fea)):
             v_seg_fea=self.segment_feature_aggregation_att(narrative_v_fea[v_idx],visual_frames_seg_indicator[v_idx]) 
             v_ab_value,v_re_value=get_dura_info_visual(visual_seg_paded[v_idx],fps[v_idx],total_frames[v_idx])
-            v_ab_emb=self.dura_encoder(v_ab_value,'natural_ab') #seg_count*64
-            v_re_emb=self.dura_encoder(v_re_value,'natural_re') #seg_count*64
-            dura_emd=torch.cat([v_ab_emb,v_re_emb],dim=1) #seg_count*128
-            seg_general_fea=v_seg_fea+dura_emd #seg_count*128
+            v_ab_emb=self.dura_encoder(v_ab_value,'natural_ab') 
+            v_re_emb=self.dura_encoder(v_re_value,'natural_re') 
+            dura_emd=torch.cat([v_ab_emb,v_re_emb],dim=1) 
+            seg_general_fea=v_seg_fea+dura_emd 
             
             #add position embedding
             seg_index=torch.tensor([i for i in range(v_seg_fea.shape[0])]).cuda()
-            seg_position_embedding=self.position_encoder(seg_index) #seg_count*128
+            seg_position_embedding=self.position_encoder(seg_index) 
             seg_general_fea=v_seg_fea+seg_position_embedding
             if seg_general_fea.shape[0]<self.pad_seg_count:
                 pad_seg=torch.zeros((self.pad_seg_count-seg_general_fea.shape[0],128)).cuda()
                 seg_general_fea=torch.cat([seg_general_fea,pad_seg],dim=0)
             v_temporal.append(seg_general_fea)
-        v_temporal=torch.stack(v_temporal,dim=0) #batch*128
+        v_temporal=torch.stack(v_temporal,dim=0) 
 
         t_temporal=[]
         for v_idx in range(len(ocr_phrases_fea)):
-            ocr_phrase_fea=self.proj_t(ocr_phrases_fea[v_idx]) #phrase_count*128
+            ocr_phrase_fea=self.proj_t(ocr_phrases_fea[v_idx]) 
             ocr_ab_value,ocr_re_value=get_dura_info_visual(ocr_time_region[v_idx],fps[v_idx],total_frames[v_idx])
-            ocr_ab_emb=self.dura_encoder(ocr_ab_value,'ocr_ab') #phrase_count*64
-            ocr_re_emb=self.dura_encoder(ocr_re_value,'ocr_re') #phrase_count*64
-            ocr_dura_emb=torch.cat([ocr_ab_emb,ocr_re_emb],dim=1) #phrase_count*128
+            ocr_ab_emb=self.dura_encoder(ocr_ab_value,'ocr_ab')
+            ocr_re_emb=self.dura_encoder(ocr_re_value,'ocr_re') 
+            ocr_dura_emb=torch.cat([ocr_ab_emb,ocr_re_emb],dim=1) 
             ocr_phrase_fea=ocr_phrase_fea[:ocr_dura_emb.shape[0]]
             ocr_word_fea=ocr_phrase_fea+ocr_dura_emb
             #add position embedding
             phrase_index=torch.tensor([i for i in range(ocr_re_emb.shape[0])]).cuda()
             phrase_position_embedding=self.position_encoder(phrase_index)
-            ocr_word_fea=ocr_word_fea+phrase_position_embedding #phrase_count*128
+            ocr_word_fea=ocr_word_fea+phrase_position_embedding
         
             if ocr_word_fea.shape[0]<self.pad_ocr_phrase_count:
                 pad_phrase=torch.zeros((self.pad_ocr_phrase_count-ocr_word_fea.shape[0],128)).cuda()
                 ocr_word_fea=torch.cat((ocr_word_fea,pad_phrase),dim=0)
             t_temporal.append(ocr_word_fea)
-        t_temporal=torch.stack(t_temporal,dim=0) #batch*pad_ocr_phrase_count*128
+        t_temporal=torch.stack(t_temporal,dim=0) 
         
 
         narative_t=self.t_interseg_attention(t_temporal)
@@ -281,7 +281,7 @@ class MEAM(torch.nn.Module):
         narrative_multimodal_segs_fea=self.narative_interact_trm(narrative_multimodal_segs_fea)
         narrative_temporal_fea=torch.mean(narrative_multimodal_segs_fea,dim=1) 
 
-        meam_fea=torch.cat((ocr_layout_pattern,narrative_temporal_fea),1) #batch*256
+        meam_fea=torch.cat((ocr_layout_pattern,narrative_temporal_fea),1) 
         output_meam=self.narative_classifier(meam_fea)
         return output_meam
 

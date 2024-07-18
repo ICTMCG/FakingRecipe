@@ -14,7 +14,9 @@ parser.add_argument('--batch_size', type = int, default=128)
 parser.add_argument('--early_stop', type=int, default=5)
 parser.add_argument('--seed', type=int, default=2023)
 parser.add_argument('--gpu', default='0')
-parser.add_argument('--lr', type=float, default=1e-3)
+parser.add_argument('--lr', type=float)
+parser.add_argument('--alpha',type=float)
+parser.add_argument('--beta',type=float)
 parser.add_argument('--inference_ckp', help='input path of inference checkpoint when mode is inference')
 parser.add_argument('--path_ckp', default= './checkpoints/')
 parser.add_argument('--path_tb', default= './tensorboard/')
@@ -40,6 +42,8 @@ config={
     'early_stop':args.early_stop,
     'device':args.gpu,
     'lr':args.lr,
+    'alpha':args.alpha,
+    'beta':args.beta,
     'inference_ckp':args.inference_ckp,
     'path_ckp':args.path_ckp,
     'path_tb':args.path_tb

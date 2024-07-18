@@ -12,7 +12,7 @@ import copy
 
 
 class Trainer():
-    def __init__(self,model,device,lr,dataloaders,save_param_path,writer,early_stop,epoches,model_name,save_predict_result_path,beta_c=0.1,beta_n=2,scheduler_option=False,save_threshold = 0.7, start_epoch = 0):
+    def __init__(self,model,device,lr,dataloaders,save_param_path,writer,early_stop,epoches,model_name,save_predict_result_path,beta_c,beta_n,scheduler_option=False,save_threshold = 0.7, start_epoch = 0):
         self.model = model
         self.device = device
         self.model_name = model_name
