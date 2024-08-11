@@ -47,7 +47,7 @@ If you would like to access the FakeTT dataset, please fill out this [Applicatio
 ## Data Preprocess
 - To extract OCR, we use [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
 - To seg video clips, we use [TransNetv2](https://github.com/soCzech/TransNetV2).
-- To facilitate reproduction, we provide preprocessed features, which you can download from [this link]() and place the '/fea' directory under FakingRecipe (at the same level as main.py). Additionally, we offer [checkpoints]() for two datasets, which you can similarly place the '/provided_ckp' directory under FakingRecipe.
+- To facilitate reproduction, we provide preprocessed features, which you can download from [this link](https://pan.baidu.com/s/1BI7hDnDbrpQlWBb6-dslYQ?pwd=qkqj)(pwd: qkqj) and place the '/fea' directory under FakingRecipe (at the same level as main.py). Additionally, we offer [checkpoints](https://pan.baidu.com/s/1BI7hDnDbrpQlWBb6-dslYQ?pwd=qkqj) (pwd: qkqj) for two datasets, which you can similarly place the '/provided_ckp' directory under FakingRecipe.
 
 ## Quick Start
 You can utilize FakeRecipe to infer the authenticity of the samples from the test set by following code:
