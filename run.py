@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from utils.dataloader import *
 from utils.Trainer import *
-from models.FakingRecipe import *
+from model.FakingRecipe import *
 
 class Run():
     def __init__(self,config):
@@ -56,10 +56,10 @@ class Run():
             result=trainer.test(ckp_path)
         elif self.mode=='inference_test':
             if self.dataset=='fakesv':
-                test_file='./data/FakeSV/inference_test_vid.txt'
+                test_file='./data/FakeSV/data-split/vid_time3_test.txt'
                 save_predict_result_path='./predict_result/FakeSV/'
             elif self.dataset=='fakett':
-                test_file='./data/FakeTT/inference_test_vid.txt'
+                test_file='./data/FakeTT/data-split/vid_time3_test.txt'
                 save_predict_result_path='./predict_result/FakeTT/'
             dataloader=self.get_dataloader(test_file)
             inferncer=Inferencer(model=self.model,device=self.device,model_name='FakingRecipe',dataset=self.dataset,dataloader=dataloader,save_predict_result_path=save_predict_result_path)

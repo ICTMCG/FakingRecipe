@@ -90,12 +90,12 @@ class DurationEncoding(nn.Module):
     def __init__(self,dim,dataset):
         super(DurationEncoding,self).__init__()
         if dataset=='fakett':
-            #'./data/FakeTT/fakett_segment_duration.json' record the duration of each clip(segment) for each video
-            with open('./data/FakeTT/fakett_segment_duration.json', 'r') as json_file:
+            #'./fea/fakett/fakett_segment_duration.json' record the duration of each clip(segment) for each video
+            with open('./fea/fakett/fakett_segment_duration.json', 'r') as json_file:
                 seg_dura_info=json.load(json_file)
         elif dataset=='fakesv':
-            #'./data/FakeSV/fakesv_segment_duration.json' record the duration of each clip(segment) for each video
-            with open('./data/FakeSV/fakesv_segment_duration.json', 'r') as json_file:
+            #'./fea/fakesv/fakesv_segment_duration.json' record the duration of each clip(segment) for each video
+            with open('./fea/fakesv/fakesv_segment_duration.json', 'r') as json_file:
                 seg_dura_info=json.load(json_file)
         
         self.all_seg_duration=seg_dura_info['all_seg_duration']
@@ -130,22 +130,16 @@ class DurationEncoding(nn.Module):
                 all_segs_embedding.append(dura_embedding)
         elif attribute=='ocr_ab':
             for dv in time_value:
-                try:
-                    bucket_indice=torch.searchsorted(self.ocr_absolute_bin_edges, torch.tensor(dv,dtype=torch.float64))
-                    dura_embedding=self.ocr_ab_duration_embed(bucket_indice)
-                    all_segs_embedding.append(dura_embedding)
-                except:
-                    print(self.ocr_absolute_bin_edges)
-                    print(bucket_indice)
+                bucket_indice=torch.searchsorted(self.ocr_absolute_bin_edges, torch.tensor(dv,dtype=torch.float64))
+                dura_embedding=self.ocr_ab_duration_embed(bucket_indice)
+                all_segs_embedding.append(dura_embedding)
+                
         elif attribute=='ocr_re':
             for dv in time_value:
-                try:
-                    bucket_indice=torch.searchsorted(self.ocr_relative_bin_edges, torch.tensor(dv,dtype=torch.float64))
-                    dura_embedding=self.ocr_re_duration_embed(bucket_indice)
-                    all_segs_embedding.append(dura_embedding)
-                except:
-                    print(self.ocr_relative_bin_edges)
-                    print(bucket_indice)
+                bucket_indice=torch.searchsorted(self.ocr_relative_bin_edges, torch.tensor(dv,dtype=torch.float64))
+                dura_embedding=self.ocr_re_duration_embed(bucket_indice)
+                all_segs_embedding.append(dura_embedding)
+                
 
         if len(all_segs_embedding)==0:
             return torch.zeros((1,self.result_dim)).cuda() 

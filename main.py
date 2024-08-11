@@ -7,7 +7,7 @@ import torch
 from run import Run
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', default='ttfn', help='ttfn/fakesv')
+parser.add_argument('--dataset', default='fakett', help='fakett/fakesv')
 parser.add_argument('--mode', default='inference_test', help='train/inference_test')
 parser.add_argument('--epoches', type=int, default=30)
 parser.add_argument('--batch_size', type = int, default=128)

@@ -13,7 +13,7 @@ class FakingRecipe_Dataset(Dataset):
     def __init__(self, vid_path,dataset):
         self.dataset=dataset
         if dataset=='fakesv': 
-            self.data_all = pd.read_json('./data/FakeSV/fakesv_data.json',orient='records',dtype=False,lines=True)
+            self.data_all = pd.read_json('./fea/fakesv/metainfo.json',orient='records',dtype=False,lines=True)
             self.vid=[]
             with open(vid_path, "r") as fr:
                 for line in fr.readlines():
@@ -21,45 +21,45 @@ class FakingRecipe_Dataset(Dataset):
             self.data = self.data_all[self.data_all.video_id.isin(self.vid)]
             self.data.reset_index(inplace=True)
 
-            self.ocr_pattern_fea_path='./data/FakeSV/preprocess_ocr/sam'
-            self.ocr_phrase_fea_path='./data/FakeSV/preprocess_ocr/ocr_phrase_fea.pkl'
+            self.ocr_pattern_fea_path='./fea/fakesv/preprocess_ocr/sam'
+            self.ocr_phrase_fea_path='./fea/fakesv/preprocess_ocr/ocr_phrase_fea.pkl'
             with open(self.ocr_phrase_fea_path, 'rb') as f:
                 self.ocr_phrase = torch.load(f)
 
-            self.text_semantic_fea_path='./data/FakeSV/preprocess_text/sem_text_fea.pkl'
+            self.text_semantic_fea_path='./fea/fakesv/preprocess_text/sem_text_fea.pkl'
             with open(self.text_semantic_fea_path, 'rb') as f:
                 self.text_semantic_fea = torch.load(f)
 
-            self.text_emo_fea_path='./data/FakeSV/preprocess_text/emo_text_fea.pkl'
+            self.text_emo_fea_path='./fea/fakesv/preprocess_text/emo_text_fea.pkl'
             with open(self.text_emo_fea_path, 'rb') as f:
                 self.text_emo_fea = torch.load(f)
 
-            self.audio_fea_path='./data/FakeSV/preprocess_audio'
-            self.visual_fea_path='./data/FakeSV/preprocess_visual'
+            self.audio_fea_path='./fea/fakesv/preprocess_audio'
+            self.visual_fea_path='./fea/fakesv/preprocess_visual'
         elif dataset=='fakett':
-            self.data_all=pd.read_json('./data/FakeTT/fakett_data.json',orient='records',lines=True,dtype={'video_id': str})
+            self.data_all=pd.read_json('./fea/fakett/metainfo.json',orient='records',lines=True,dtype={'video_id': str})
             self.vid=[]
             with open(vid_path, "r") as fr:
                 for line in fr.readlines():
                     self.vid.append(line.strip())
             self.data = self.data_all[self.data_all.video_id.isin(self.vid)]
             self.data.reset_index(inplace=True)
-            self.ocr_pattern_fea_path='./data/FakeTT/preprocess_ocr/sam'
+            self.ocr_pattern_fea_path='./fea/fakett/preprocess_ocr/sam'
 
-            self.ocr_phrase_fea_path='./data/FakeTT/preprocess_ocr/ocr_phrase_fea.pkl'
+            self.ocr_phrase_fea_path='./fea/fakett/preprocess_ocr/ocr_phrase_fea.pkl'
             with open(self.ocr_phrase_fea_path, 'rb') as f:
                 self.ocr_phrase = torch.load(f)
 
-            self.text_semantic_fea_path='./data/FakeTT/preprocess_text/sem_text_fea.pkl'
+            self.text_semantic_fea_path='./fea/fakett/preprocess_text/sem_text_fea.pkl'
             with open(self.text_semantic_fea_path, 'rb') as f:
                 self.text_semantic_fea = torch.load(f)
 
-            self.text_emo_fea_path='./data/FakeTT/preprocess_text/emo_text_fea.pkl'
+            self.text_emo_fea_path='./fea/fakett/preprocess_text/emo_text_fea.pkl'
             with open(self.text_emo_fea_path, 'rb') as f:
                 self.text_emo_fea = torch.load(f)
 
-            self.audio_fea_path='./data/FakeTT/preprocess_audio'
-            self.visual_fea_path='./data/FakeTT/preprocess_visual'
+            self.audio_fea_path='./fea/fakett/preprocess_audio'
+            self.visual_fea_path='./fea/fakett/preprocess_visual'
 
     def __len__(self):
         return self.data.shape[0]
@@ -245,8 +245,8 @@ def collate_fn_FakeingRecipe(batch):
 
     vid = [item['vid'] for item in batch]
     label = torch.stack([item['label'] for item in batch])
-    all_phrase_semantic_fea = [item['all_phrase_semantic_fea'] for item in batch] #batch*512*768
-    all_phrase_emo_fea = torch.stack([item['all_phrase_emo_fea'] for item in batch]) #batch*768
+    all_phrase_semantic_fea = [item['all_phrase_semantic_fea'] for item in batch] 
+    all_phrase_emo_fea = torch.stack([item['all_phrase_emo_fea'] for item in batch]) 
 
     raw_visual_frames = [item['raw_visual_frames'] for item in batch]
     raw_audio_emo = [item['raw_audio_emo'] for item in batch] 
@@ -254,16 +254,16 @@ def collate_fn_FakeingRecipe(batch):
     total_frame = torch.stack([item['total_frame'] for item in batch])
 
     content_visual_frames, _ = pad_frame_sequence(num_visual_frames,raw_visual_frames)
-    raw_audio_emo = torch.cat(raw_audio_emo,dim=0) #batch*768
+    raw_audio_emo = torch.cat(raw_audio_emo,dim=0) 
 
     all_phrase_semantic_fea=[x if x.shape[0]==512 else torch.cat((x,torch.zeros([512-x.shape[0],x.shape[1]],dtype=torch.float)),dim=0) for x in all_phrase_semantic_fea] #batch*512*768
     all_phrase_semantic_fea=torch.stack(all_phrase_semantic_fea)
 
-    ocr_pattern_fea = torch.stack([item['ocr_pattern_fea'] for item in batch]) #batch*4096
-    ocr_phrase_fea = [item['ocr_phrase_fea'] for item in batch] #batch*seq_len*512
-    ocr_time_region = [item['ocr_time_region'] for item in batch] #batch*seq_len*2
+    ocr_pattern_fea = torch.stack([item['ocr_pattern_fea'] for item in batch]) 
+    ocr_phrase_fea = [item['ocr_phrase_fea'] for item in batch] 
+    ocr_time_region = [item['ocr_time_region'] for item in batch] 
 
-    visual_time_region = [item['visual_time_region'] for item in batch] #batch*seg_len*2
+    visual_time_region = [item['visual_time_region'] for item in batch] 
 
     visual_frames_fea,visual_frames_seg_indicator,sampled_seg=pad_frame_by_seg(num_visual_frames,raw_visual_frames,visual_time_region)
     visual_seg_paded=pad_segment(sampled_seg,num_segs)
