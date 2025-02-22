@@ -47,6 +47,7 @@ If you would like to access the FakeTT dataset, please fill out this [Applicatio
 ## Data Preprocess
 - To extract OCR, we use [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
 - To seg video clips, we use [TransNetv2](https://github.com/soCzech/TransNetV2).
+- To extract visual features from textual regions, we utilize a part of the [SAM decoder](https://github.com/facebookresearch/segment-anything). For audio emotion feature extraction, we use [this model](https://huggingface.co/Rajaram1996/Hubert_emotion) for English data and [this model](https://huggingface.co/xmj2002/hubert-base-ch-speech-emotion-recognition) for Chinese data. To extract text-based emotion features, we use [this model](https://huggingface.co/unmolb/xlm-roberta-emotion). Note that newer versions of these tools and pretrained feature extraction models may be available, and they can be replaced as needed for improved performance.
 - To facilitate reproduction, we provide preprocessed features, which you can download from [this link](https://pan.baidu.com/s/1z4taz_nOe_Uq5IANlPyOYw?pwd=ydp9)(pwd: ydp9) and place the '/fea' directory under FakingRecipe (at the same level as main.py). Additionally, we offer [checkpoints](https://pan.baidu.com/s/1BI7hDnDbrpQlWBb6-dslYQ?pwd=qkqj) (pwd: qkqj) for two datasets, which you can similarly place the '/provided_ckp' directory under FakingRecipe.
 
 ## Quick Start
