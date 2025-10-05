@@ -4,10 +4,13 @@ The implementation of **FakingRecipe**, a creative process-aware model for detec
 captures the fake news preferences in material selection from sentimental and semantic aspects and considers the traits of material editing from spatial and temporal aspects.
 
 [Preprint](https://www.arxiv.org/abs/2407.16670)
+
+[Paper](https://doi.org/10.1145/3664647.3680663)
+
 <!-- ## File Structure
 ```shell
 .
-├── README  # * Instruction to this repo
+├── README  # * Instruction for this repo
 ├── requirements  # * Requirements for Conda Environment
 ├── data  # * Place data split & preprocessed data
 ├── models  # * Codes for FakingRecipe Model
@@ -42,7 +45,7 @@ We manually annotated each collected video to assess its veracity. Each video un
     }
   ```
 - **Data Acquisition**
-If you would like to access the FakeTT dataset, please fill out this [Application Form](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__R5hy59UMEEyNENDVTlYMzZSRjlQQkIzRFg3TEpIMy4u). The download link will be sent to you once the form is accepted.
+If you would like to access the FakeTT dataset, please fill out this [Application Form](https://forms.office.com/r/JaTk8Vjc69). The download link will be sent to you once the form is accepted.
 
 ## Data Preprocess
 - To extract OCR, we use [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
@@ -62,7 +65,7 @@ You can utilize FakeRecipe to infer the authenticity of the samples from the tes
 
 
 ## Citation
-If you find our dataset and code are helpful, please cite the following ACM MM 2024 paper:
+If you find our dataset and code helpful, please cite the following ACM MM 2024 paper:
  ```
 @inproceedings{fakingrecipe,
 title={FakingRecipe: Detecting Fake News on Short Video Platforms from the Perspective of Creative Process},
