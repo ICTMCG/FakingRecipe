@@ -45,7 +45,7 @@ We manually annotated each collected video to assess its veracity. Each video un
     }
   ```
 - **Data Acquisition**
-If you would like to access the FakeTT dataset, please fill out this [Application Form](https://forms.office.com/r/JaTk8Vjc69). The download link will be sent to you once the form is accepted.
+If you would like to access the FakeTT dataset, please fill out this [Application Form](https://forms.cloud.microsoft/r/vkYBFn8a9K). The download link will be sent to you once the form is accepted.
 
 ## Data Preprocess
 - To extract OCR, we use [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
